@@ -4,11 +4,12 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "./ui/navigation-menu";
+} from "@/components/ui/navigation-menu";
+
 
 function Navigation() {
   return (
-    <NavigationMenu>
+    <NavigationMenu className="mx-auto">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink>
