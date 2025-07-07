@@ -1,6 +1,11 @@
+import { AddBookForm } from "@/components/AddBookForm"
+
 function AddBook() {
   return (
-    <div>AddBook</div>
+    <div className="container mx-auto">
+      <div>AddBook</div>
+      <AddBookForm></AddBookForm>
+    </div>
   )
 }
 
