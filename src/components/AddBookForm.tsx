@@ -20,6 +20,13 @@ import {
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import type { Book } from "@/types/Book.types";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 const formSchema = z.object({
   title: z.string().min(10).max(100, {
@@ -28,9 +35,7 @@ const formSchema = z.object({
   author: z.string().min(2).max(50, {
     message: "Author name must be between 2 to 50 characters",
   }),
-  genre: z.string().min(2).max(20, {
-    message: "Genre must be between 2 to 20 characters",
-  }),
+  genre: z.string(),
   isbn: z.string().min(5).max(20, {
     message: "ISBN must be between 5 to 20 characters",
   }),
@@ -44,7 +49,7 @@ export function AddBookForm({ book }: { book: Book }) {
   const [updateBook] = useUpdateBookMutation();
   const navigate = useNavigate();
 
-  const isEditMode = book ? true : false;
+  const isEditMode = !!book;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,22 +60,24 @@ export function AddBookForm({ book }: { book: Book }) {
       isbn: book?.isbn || "",
       description: book?.description || "",
       copies: book?.copies || 0,
-      available: book?.available === false ? false : true,
+      available: book?.available !== false, // default to true if undefined
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       if (isEditMode) {
-        console.log(values)
-        await updateBook({ id: book._id, book: {
-          ...values,
-          available: values?.copies > 0 ? true : false
-        } });
+        await updateBook({
+          id: book._id,
+          book: {
+            ...values,
+            available: values.copies > 0 ? true : false,
+          },
+        });
         reset();
         toast.success("Book is updated successfully :)");
         navigate("/");
-        return
+        return;
       }
       await postBook(values);
       reset();
@@ -78,7 +85,7 @@ export function AddBookForm({ book }: { book: Book }) {
       navigate("/");
     } catch (err) {
       console.log(err);
-      toast.success("Something is Wrong. Try Again Later :(");
+      toast.error("Something is wrong. Try again later :(");
     }
   }
 
@@ -115,10 +122,22 @@ export function AddBookForm({ book }: { book: Book }) {
           control={form.control}
           name="genre"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full">
               <FormLabel>Genre</FormLabel>
-              <FormControl>
-                <Input placeholder="genre" {...field} />
+              <FormControl className="w-full">
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select genre" />
+                  </SelectTrigger>
+                  <SelectContent className="w-full">
+                    <SelectItem value="FICTION">FICTION</SelectItem>
+                    <SelectItem value="NON_FICTION">NON_FICTION</SelectItem>
+                    <SelectItem value="SCIENCE">SCIENCE</SelectItem>
+                    <SelectItem value="HISTORY">HISTORY</SelectItem>
+                    <SelectItem value="BIOGRAPHY">BIOGRAPHY</SelectItem>
+                    <SelectItem value="FANTASY">FANTASY</SelectItem>
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -142,9 +161,9 @@ export function AddBookForm({ book }: { book: Book }) {
           name="copies"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>No of Available Book</FormLabel>
+              <FormLabel>No of Available Books</FormLabel>
               <FormControl>
-                <Input placeholder="20" {...field} />
+                <Input placeholder="20" type="number" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
