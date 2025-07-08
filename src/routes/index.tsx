@@ -3,6 +3,7 @@ import App from "../App";
 import Books from "../pages/Books";
 import AddBook from "../pages/AddBook";
 import BorrowSummary from "../pages/BorrowSummary";
+import BorrowBook from "../pages/BorrowBook";
 
 const router = createBrowserRouter([
   {
@@ -18,12 +19,16 @@ const router = createBrowserRouter([
         Component: Books,
       },
       {
-        path: "add-book",
+        path: "create-book",
         Component: AddBook,
       },
       {
-        path: 'update-book/:id',
+        path: 'edit-book/:id',
         Component: AddBook
+      },
+      {
+        path: 'borrow/:bookId',
+        Component: BorrowBook
       },
       {
         path: "borrow-summary",

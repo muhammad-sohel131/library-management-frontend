@@ -23,7 +23,7 @@ function Books() {
       <div className="flex justify-between items-center">
         <h2>All Books</h2>
         <Button>
-          <Link to="/add-book">Add a Book</Link>
+          <Link to="/create-book">Add a Book</Link>
         </Button>
       </div>
       <div>

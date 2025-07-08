@@ -16,7 +16,7 @@ function BookActionMenu({ id }: { id: string }) {
   const navigate = useNavigate()
 
   const handleEdit = (id: string) => {
-    navigate(`/update-book/${id}`)
+    navigate(`/edit-book/${id}`)
   };
 
   const handleDelete = async (id: string) => {
@@ -30,7 +30,7 @@ function BookActionMenu({ id }: { id: string }) {
   };
 
   const handleBorrow = (id: string) => {
-    console.log(`Id is ${id} for borrow`);
+    navigate(`/borrow/${id}`)
   };
   return (
     <DropdownMenu>

@@ -18,7 +18,7 @@ function Navigation() {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuLink>
-            <Link to="add-book">Add Book</Link>
+            <Link to="create-book">Add Book</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
