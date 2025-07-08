@@ -32,6 +32,7 @@ function BookActionMenu({ id }: { id: string }) {
   const handleBorrow = (id: string) => {
     navigate(`/borrow/${id}`)
   };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -42,6 +43,9 @@ function BookActionMenu({ id }: { id: string }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem onClick={() => navigate(`/books/${id}`)}>
+          View Book
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleEdit(id)}>
           Edit Book
         </DropdownMenuItem>

@@ -1,3 +1,4 @@
+import Spinner from "@/components/Spinner";
 import {
   Table,
   TableBody,
@@ -14,7 +15,7 @@ function BorrowSummary() {
   const { data, isLoading } = useGetBorrowQuery(undefined);
 
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return <Spinner />;
   }
 
   const borrows = data?.data

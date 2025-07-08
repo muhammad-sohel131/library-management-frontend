@@ -1,4 +1,5 @@
 import { AddBookForm } from "@/components/AddBookForm"
+import Spinner from "@/components/Spinner"
 import { useGetBookByIdQuery } from "@/redux/features/books/books"
 import { useParams } from "react-router"
 
@@ -7,7 +8,7 @@ function AddBook() {
   const {data, isLoading} = useGetBookByIdQuery(id)
 
   if(isLoading){
-    return <h2>Loading....</h2>
+    return <Spinner />
   } 
 
   return (

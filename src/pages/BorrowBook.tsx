@@ -30,6 +30,7 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import type { Book } from "@/types/Book.types";
 import { usePostBorrowMutation } from "@/redux/features/borrow/borrow";
+import Spinner from "@/components/Spinner";
 
 const formSchema = z.object({
   book: z.string(),
@@ -85,7 +86,7 @@ function BorrowBook() {
   }
 
    if (isLoading) {
-    return <h2>Loading...</h2>;
+    return <Spinner />;
   }
   return (
     <div className="container mx-auto my-20 px-10">

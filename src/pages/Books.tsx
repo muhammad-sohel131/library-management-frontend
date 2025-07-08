@@ -1,3 +1,4 @@
+import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table-data";
 import { useGetBooksQuery } from "@/redux/features/books/books";
@@ -15,7 +16,7 @@ function Books() {
   }
 
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return <Spinner />;
   }
 
   return (
