@@ -5,11 +5,21 @@ export const booksApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://library-management-seven-jade.vercel.app/api/'
     }),
+    tagTypes: ['Book'],
     endpoints: (builder) => ({
         getBooks : builder.query({
-            query: () => 'books'
+            query: () => 'books',
+            providesTags: ['Book']
+        }),
+        postBook: builder.mutation({
+            query: (book) => ({
+                url: 'books',
+                method: 'POST',
+                body: book
+            }),
+            invalidatesTags: ['Book']
         })
     })
 })
 
-export const { useGetBooksQuery } = booksApi
+export const { useGetBooksQuery, usePostBookMutation } = booksApi
