@@ -22,6 +22,10 @@ const router = createBrowserRouter([
         Component: AddBook,
       },
       {
+        path: 'update-book/:id',
+        Component: AddBook
+      },
+      {
         path: "borrow-summary",
         Component: BorrowSummary,
       },

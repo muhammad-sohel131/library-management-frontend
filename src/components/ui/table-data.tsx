@@ -13,7 +13,7 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -21,8 +21,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -35,7 +33,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Book } from "@/types/Book.types";
-import { handleBorrow, handleDelete, handleEdit } from "@/lib/tableHandler";
+import BookActionMenu from "../BookActionMenu";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const columns: ColumnDef<Book>[] = [
@@ -81,12 +79,14 @@ export const columns: ColumnDef<Book>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("author")}</div>,
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("author")}</div>
+    ),
   },
   {
     accessorKey: "genre",
     header: () => <div className="text-right">Genre</div>,
-    cell: ({ row }) => <div className="lowercase">{row.getValue('genre')}</div>,
+    cell: ({ row }) => <div className="lowercase">{row.getValue("genre")}</div>,
   },
   {
     accessorKey: "isbn",
@@ -96,38 +96,29 @@ export const columns: ColumnDef<Book>[] = [
   {
     accessorKey: "copies",
     header: () => <div className="text-right">Copies</div>,
-    cell: ({ row }) => <div className="lowercase">{row.getValue("copies")}</div>,
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("copies")}</div>
+    ),
   },
   {
     accessorKey: "available",
     header: () => <div className="text-right">Availability</div>,
-    cell: ({ row }) => <div className="capitalize">{row.getValue("available") ? "Available" : "Not Available"}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize">
+        {row.getValue("available") ? "Available" : "Not Available"}
+      </div>
+    ),
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => handleEdit(row.original._id)}>Edit Book</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleDelete(row.original._id)}>Delete Book</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleBorrow(row.original._id)}>Borrow Book</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      return <BookActionMenu id={row.original._id} />;
     },
   },
 ];
 
-export function DataTable({data} : {data: Book[]}) {
+export function DataTable({ data }: { data: Book[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
