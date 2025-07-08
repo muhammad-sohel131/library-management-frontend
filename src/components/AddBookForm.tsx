@@ -62,7 +62,11 @@ export function AddBookForm({ book }: { book: Book }) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       if (isEditMode) {
-        await updateBook({ id: book._id, book: values });
+        console.log(values)
+        await updateBook({ id: book._id, book: {
+          ...values,
+          available: values?.copies > 0 ? true : false
+        } });
         reset();
         toast.success("Book is updated successfully :)");
         navigate("/");

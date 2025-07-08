@@ -19,7 +19,7 @@ function Books() {
   }
 
   return (
-    <div className="container mx-auto mt-20">
+    <div className="container mx-auto mt-20 px-10">
       <div className="flex justify-between items-center">
         <h2>All Books</h2>
         <Button>

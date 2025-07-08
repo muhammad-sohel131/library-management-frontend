@@ -88,7 +88,7 @@ function BorrowBook() {
     return <h2>Loading...</h2>;
   }
   return (
-    <div className="container mx-auto my-20">
+    <div className="container mx-auto my-20 px-10">
       <h2 className="my-5">
         You are borrowing a book title : <b>{data.data.title}</b>
       </h2>

@@ -11,8 +11,8 @@ function AddBook() {
   } 
 
   return (
-    <div className="container mx-auto">
-      <div>AddBook</div>
+    <div className="container mx-auto px-10">
+      <h2 className="my-10 font-bold text-5xl">{data?.data ? 'Update Book' : 'Add Book'}</h2>
       <AddBookForm book={data?.data}></AddBookForm>
     </div>
   )
