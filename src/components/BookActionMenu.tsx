@@ -16,8 +16,7 @@ function BookActionMenu({ id }: { id: string }) {
   const navigate = useNavigate()
 
   const handleEdit = (id: string) => {
-    navigate('/update-book')
-    console.log(`Id is ${id} for edit`);
+    navigate(`/update-book/${id}`)
   };
 
   const handleDelete = async (id: string) => {

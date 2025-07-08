@@ -13,9 +13,13 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { usePostBookMutation } from "@/redux/features/books/books";
+import {
+  usePostBookMutation,
+  useUpdateBookMutation,
+} from "@/redux/features/books/books";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import type { Book } from "@/types/Book.types";
 
 const formSchema = z.object({
   title: z.string().min(10).max(100, {
@@ -32,33 +36,45 @@ const formSchema = z.object({
   }),
   description: z.string(),
   copies: z.coerce.number(),
+  available: z.boolean(),
 });
 
-export function AddBookForm() {
+export function AddBookForm({ book }: { book: Book }) {
   const [postBook, { reset }] = usePostBookMutation();
+  const [updateBook] = useUpdateBookMutation();
   const navigate = useNavigate();
+
+  const isEditMode = book ? true : false;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      author: "",
-      genre: "",
-      isbn: "",
-      description: "",
-      copies: 0,
+      title: book?.title || "",
+      author: book?.author || "",
+      genre: book?.genre || "",
+      isbn: book?.isbn || "",
+      description: book?.description || "",
+      copies: book?.copies || 0,
+      available: book?.available === false ? false : true,
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      if (isEditMode) {
+        await updateBook({ id: book._id, book: values });
+        reset();
+        toast.success("Book is updated successfully :)");
+        navigate("/");
+        return
+      }
       await postBook(values);
       reset();
-      toast.success("Book is uploaded successfully :)")
+      toast.success("Book is uploaded successfully :)");
       navigate("/");
     } catch (err) {
       console.log(err);
-      toast.success("Something is Wrong. Try Again Later :(")
+      toast.success("Something is Wrong. Try Again Later :(");
     }
   }
 
@@ -144,7 +160,7 @@ export function AddBookForm() {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{isEditMode ? "Update" : "Submit"}</Button>
       </form>
     </Form>
   );
