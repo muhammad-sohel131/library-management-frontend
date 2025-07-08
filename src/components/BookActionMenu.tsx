@@ -10,27 +10,37 @@ import {
 import { useDeleteBookMutation } from "@/redux/features/books/books";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "./ui/alert-dialog"; 
 
 function BookActionMenu({ id }: { id: string }) {
   const [deleteBook] = useDeleteBookMutation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleEdit = (id: string) => {
-    navigate(`/edit-book/${id}`)
+    navigate(`/edit-book/${id}`);
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async () => {
     try {
       await deleteBook(id);
       toast.success("Book is Deleted!");
     } catch (err) {
       console.log(err);
-      toast.error("Something Wrong. Please Try Again Later!");
+      toast.error("Something went wrong. Please try again later!");
     }
   };
 
   const handleBorrow = (id: string) => {
-    navigate(`/borrow/${id}`)
+    navigate(`/borrow/${id}`);
   };
 
   return (
@@ -49,9 +59,28 @@ function BookActionMenu({ id }: { id: string }) {
         <DropdownMenuItem onClick={() => handleEdit(id)}>
           Edit Book
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleDelete(id)}>
-          Delete Book
-        </DropdownMenuItem>
+
+        {/* Delete with AlertDialog */}
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete Book</DropdownMenuItem>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you sure you want to delete this book?</AlertDialogTitle>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDelete}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                Confirm Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
         <DropdownMenuItem onClick={() => handleBorrow(id)}>
           Borrow Book
         </DropdownMenuItem>
